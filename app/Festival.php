@@ -2,9 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Festival extends Model
 {
-    //
+    public function address()
+    {
+        return $this->hasOne(Address::class);
+    }
 }
