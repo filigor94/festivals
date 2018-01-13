@@ -1,18 +1,5 @@
-@extends('admin.layouts.admin-master')
-
-@section('content-header')
-    <h1>
-        Create Festival
-        <small>Optional description</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
-    </ol>
-@endsection
-
-@section('content')
-    {!! Form::open(['route' => 'festivals.store', 'method' => 'post', 'files' => true]) !!}
+{!! Form::model($festival, ['route' => ['festivals.store', $festival->id], 'method' => 'post', 'files' => true]) !!}
+    <div class="modal-body" id="festivalBody" style="overflow: auto;">
         <div class="col-lg-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -40,7 +27,12 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-clock-o"></i>
                             </div>
-                            {!! Form::text('daterange', null, ['class' => 'form-control pull-right', 'id' => 'reservationtime']) !!}
+
+                            <?php
+                                $daterange = \Carbon\Carbon::parse($festival->start_date)->format('m/d/Y H:i A') . ' - ' . \Carbon\Carbon::parse($festival->end_date)->format('m/d/Y H:i A');
+                            ?>
+
+                            {!! Form::text('daterange', $daterange, ['class' => 'form-control pull-right', 'id' => 'reservationtime']) !!}
                         </div>
                         <!-- /.input group -->
 
@@ -51,6 +43,12 @@
                         @endif
                     </div>
                     <!-- /.form group -->
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img src="{{ $festival->image }}" class="img-responsive" style="object-fit: contain; max-height: 300px;">
+                        </div>
+                    </div>
 
                     <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
                         {!! Form::label('image', 'Featured image') !!}
@@ -86,7 +84,7 @@
                 <div class="box-body">
                     <div class="form-group{{ $errors->has('country') ? ' has-error' : '' }}">
                         {!! Form::label('country', 'Country') !!}
-                        {!! Form::text('country', null, ['class' => 'form-control']) !!}
+                        {!! Form::text('country', $festival->address->country, ['class' => 'form-control']) !!}
                         @if($errors->has('country'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('country') }}</strong>
@@ -96,7 +94,7 @@
 
                     <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
                         {!! Form::label('city', 'City') !!}
-                        {!! Form::text('city', null, ['class' => 'form-control']) !!}
+                        {!! Form::text('city', $festival->address->city, ['class' => 'form-control']) !!}
                         @if($errors->has('city'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('city') }}</strong>
@@ -106,7 +104,7 @@
 
                     <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
                         {!! Form::label('address', 'Address') !!}
-                        {!! Form::text('address', null, ['class' => 'form-control']) !!}
+                        {!! Form::text('address', $festival->address->address, ['class' => 'form-control']) !!}
                         @if($errors->has('address'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('address') }}</strong>
@@ -114,11 +112,16 @@
                         @endif
                     </div>
 
-                    {!! Form::hidden('map_lat', null, ['id' => 'map_lat']) !!}
-                    {!! Form::hidden('map_lng', null, ['id' => 'map_lng']) !!}
+                    <?php
+                        $coordinates[] = ['', (double)$festival->address->map_lat, (double)$festival->address->map_lng, 0];
+                    ?>
+
+                    {!! Form::hidden('coordinates', json_encode($coordinates), ['id' => 'coordinates']) !!}
+                    {!! Form::hidden('map_lat', $festival->address->map_lat, ['id' => 'map_lat']) !!}
+                    {!! Form::hidden('map_lng', $festival->address->map_lng, ['id' => 'map_lng']) !!}
 
                     <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                        <div id="map"></div>
+                        <div id="map-with-locations"></div>
                         @if($errors->has('map_lat') || $errors->has('map_lng'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('map_lat') }}</strong>
@@ -128,32 +131,23 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="modal-footer">
+        {!! Form::button('Close', ['class' => 'btn btn-default', 'data-dismiss' => 'modal']) !!}
+        {!! Form::submit('Save changes', ['class' => 'btn btn-primary']) !!}
+    </div>
+{!! Form::close() !!}
 
-        <div class="col-lg-12">
-            <div class="box box-primary">
-                <div class="box-footer">
-                    <a href="{{ route('festivals.index') }}" class="btn btn-danger">Cancel</a>
-                    {!! Form::submit('Create', ['class' => 'btn btn-primary pull-right']) !!}
-                </div>
-            </div>
-        </div>
-    {!! Form::close() !!}
-@endsection
-
-@section('scripts')
-    <script type="text/javascript">
-        $(function() {
-            $('input[name="daterange"]').daterangepicker({
-                timePicker: true,
-                timePickerIncrement: 5,
-                locale: {
-                    format: 'MM/DD/YYYY h:mm A'
-                }
-            });
+<script type="text/javascript">
+    $(function() {
+        $('input[name="daterange"]').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 5,
+            locale: {
+                format: 'MM/DD/YYYY h:mm A'
+            }
         });
 
-        $(window).on('load', function () {
-            initMap();
-        })
-    </script>
-@endsection
+        initMapLocations($('#coordinates').val());
+    });
+</script>

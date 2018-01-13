@@ -1,0 +1,16 @@
+.main-sidebar .user-panel {
+    white-space: normal;
+}
+
+td {
+    vertical-align: middle !important;
+}
+
+td img {
+    width: 60px;
+    height: 60px;
+}
+
+#map, #map-with-locations {
+    height: 400px;
+}

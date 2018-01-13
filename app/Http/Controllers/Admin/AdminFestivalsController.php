@@ -96,9 +96,11 @@ class AdminFestivalsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, Festival $festival)
     {
-        //
+        if ($request->ajax()) {
+            return view('admin.festivals.edit', compact('festival'));
+        }
     }
 
     /**

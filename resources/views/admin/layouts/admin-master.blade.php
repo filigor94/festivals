@@ -17,11 +17,16 @@
           apply the skin class to the body tag so the changes take effect. -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/skins/skin-blue.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.27/daterangepicker.min.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
     @yield('styles')
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
+<div class="pace  pace-inactive"><div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+        <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div></div>
     <div class="wrapper">
         @include('admin.layouts.nav')
         @include('admin.layouts.sidebar')
@@ -53,6 +58,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/js/adminlte.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.27/daterangepicker.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbKh3KgPDE67rPkoO67_V_SJdt5wsvJjw"
+            type="text/javascript"></script>
+    <script src="{{ asset('js/maps.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
 
     @yield('scripts')
 </body>
