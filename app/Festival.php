@@ -8,4 +8,9 @@ class Festival extends Model
     {
         return $this->hasOne(Address::class);
     }
+
+    public function getImageAttribute($value)
+    {
+        return asset('storage/festivals') . '/' . $value;
+    }
 }

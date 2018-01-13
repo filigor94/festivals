@@ -7,6 +7,7 @@ use App\Festival;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class AdminFestivalsController extends Controller
 {
@@ -17,7 +18,9 @@ class AdminFestivalsController extends Controller
      */
     public function index()
     {
-        return view('admin.festivals.index');
+        $festivals = Festival::latest()->paginate(10);
+
+        return view('admin.festivals.index', compact('festivals'));
     }
 
     /**
@@ -116,8 +119,15 @@ class AdminFestivalsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Festival $festival)
     {
-        //
+        if (file_exists(storage_path('app/public/festivals/' . $festival->getOriginal('image'))))
+            unlink(storage_path('app/public/festivals/' . $festival->getOriginal('image')));
+
+        $festival->delete();
+
+        $request->session()->flash('message', 'The festival has been successfully deleted.');
+
+        return redirect()->back();
     }
 }
