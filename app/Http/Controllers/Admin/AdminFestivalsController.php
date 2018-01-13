@@ -110,9 +110,49 @@ class AdminFestivalsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Festival $festival)
     {
-        //
+        if ($request->ajax()) {
+            $data = $request->validate([
+                'title' => 'required|string',
+                'daterange' => 'required',
+                'image' => 'sometimes|nullable|image|mimes:jpeg,png,bmp,gif',
+                'description' => 'nullable'
+            ]);
+
+            $address = $request->validate([
+                'country' => 'required|string',
+                'city' => 'required|string',
+                'address' => 'required',
+                'map_lat' => 'required',
+                'map_lng' => 'required'
+            ]);
+
+            if (!empty($data['image'])) {
+                if (file_exists(storage_path('app/public/festivals/' . $festival->getOriginal('image'))))
+                    unlink(storage_path('app/public/festivals/' . $festival->getOriginal('image')));
+
+                $image_name = $festival->id . '.' . $request->file('image')->getClientOriginalExtension();
+
+                $data['image'] = $image_name;
+
+                $request->file('image')->storeAs('public/festivals', $image_name);
+            }
+
+            $dates = explode('-', $data['daterange']);
+            $data['start_date'] = Carbon::createFromFormat('m/d/Y H:i A', trim($dates[0]))->toDateTimeString();
+            $data['end_date'] = Carbon::createFromFormat('m/d/Y H:i A', trim($dates[1]))->toDateTimeString();
+
+            unset($data['daterange']);
+            $data = array_filter($data);
+
+            $festival->update($data);
+            $festival->address()->update($address);
+
+            $festivals = Festival::latest()->paginate(10);
+
+            return view('admin.includes.festivals-list', compact('festivals'));
+        }
     }
 
     /**

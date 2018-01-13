@@ -32,7 +32,7 @@ function initMapLocations(data) {
     var beaches = JSON.parse(data);
     var location = {lat: beaches[0][1], lng: beaches[0][2]};
     var map = new google.maps.Map(document.getElementById('map-with-locations'), {
-        zoom: 12,
+        zoom: 13,
         center: location
     });
 

@@ -1,4 +1,4 @@
-{!! Form::model($festival, ['route' => ['festivals.store', $festival->id], 'method' => 'post', 'files' => true]) !!}
+{!! Form::model($festival, ['route' => ['festivals.store', $festival->id], 'method' => 'put', 'files' => true, 'id' => 'editFestival']) !!}
     <div class="modal-body" id="festivalBody" style="overflow: auto;">
         <div class="col-lg-6">
             <div class="box box-primary">
@@ -131,6 +131,11 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-12" style="display: none;">
+            <div id="errors" class="alert fresh-color alert-danger">
+
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         {!! Form::button('Close', ['class' => 'btn btn-default', 'data-dismiss' => 'modal']) !!}
@@ -139,6 +144,8 @@
 {!! Form::close() !!}
 
 <script type="text/javascript">
+    var url;
+
     $(function() {
         $('input[name="daterange"]').daterangepicker({
             timePicker: true,
@@ -150,4 +157,35 @@
 
         initMapLocations($('#coordinates').val());
     });
+
+    $('#editFestival').on('submit', function (e) {
+        e.preventDefault();
+
+        var createProblemFormData = new FormData(this);
+
+        url = '/admin/festivals/{{  $festival->id }}';
+
+        $.ajax({
+            type: "POST",
+            data: createProblemFormData,
+            url: url,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $('#festivals-list').html(data);
+                $('#festival').modal('hide');
+            },
+            error: function (xhr, status, error) {
+                //console.log("error " + xhr + "\n" + status + "\n" + error);
+                var errors = xhr.responseJSON['errors'];
+                var message = '<ul>';
+                $.each( errors , function( key, value ) {
+                    message += '<li>' + value + '</li>';
+                });
+                message += '</ul>';
+                $('#errors').html(message);
+                $('#errors').parent().css({'display': 'block'});
+            }
+        });
+    })
 </script>
