@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Address;
+use App\Festival;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -35,7 +38,42 @@ class AdminFestivalsController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->validate([
+            'title' => 'required|string',
+            'daterange' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,bmp,gif',
+            'description' => 'nullable'
+        ]);
 
+        $address = $request->validate([
+            'country' => 'required|string',
+            'city' => 'required|string',
+            'address' => 'required',
+            'map_lat' => 'required',
+            'map_lng' => 'required'
+        ]);
+
+        $dates = explode('-', $data['daterange']);
+        $data['start_date'] = Carbon::createFromFormat('m/d/Y H:i A', trim($dates[0]))->toDateTimeString();
+        $data['end_date'] = Carbon::createFromFormat('m/d/Y H:i A', trim($dates[1]))->toDateTimeString();
+
+        unset($data['daterange']);
+        $data = array_filter($data);
+
+        $festival = Festival::create($data);
+        $festival->address()->create($address);
+
+        $image_name = $festival->id . '.' . $request->file('image')->getClientOriginalExtension();
+
+        $request->file('image')->storeAs('public/festivals', $image_name);
+
+        $festival->update([
+            'image' => $image_name
+        ]);
+
+        $request->session()->flash('message', 'The festival has been successfully created.');
+
+        return redirect()->route('festivals.index');
     }
 
     /**

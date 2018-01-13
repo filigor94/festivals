@@ -18,9 +18,9 @@ class CreateAddressesTable extends Migration
             $table->string('country');
             $table->string('city');
             $table->string('address');
-            $table->string('map_ltd');
+            $table->string('map_lat');
             $table->string('map_lng');
-            $table->integer('id_festival')->unsigned();
+            $table->integer('festival_id')->unsigned();
             $table->timestamps();
         });
     }

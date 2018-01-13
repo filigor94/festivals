@@ -20,9 +20,7 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('festivals.store') }}" method="post" enctype="multipart/form-data" role="form">
-        {{ csrf_field() }}
-
+    {!! Form::open(['route' => 'festivals.store', 'method' => 'post', 'files' => true]) !!}
         <div class="col-lg-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -32,42 +30,63 @@
                 <!-- form start -->
 
                 <div class="box-body">
-                    <div class="form-group">
-                        <label for="title">Title</label>
-                        <input type="text" name="title" class="form-control" id="title" placeholder="Enter title">
+                    <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+                        {!! Form::label('title', 'Title') !!}
+                        {!! Form::text('title', null, ['class' => 'form-control']) !!}
+                        @if($errors->has('title'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('title') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
                     <!-- Date and time range -->
-                    <div class="form-group">
-                        <label>Duration range:</label>
+                    <div class="form-group{{ $errors->has('daterange') ? ' has-error' : '' }}">
+                        {!! Form::label('reservationtime', 'Duration range') !!}
 
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-clock-o"></i>
                             </div>
-                            <input type="text" name="daterange" class="form-control pull-right" id="reservationtime">
+                            {!! Form::text('daterange', null, ['class' => 'form-control pull-right', 'id' => 'reservationtime']) !!}
                         </div>
                         <!-- /.input group -->
+
+                        @if($errors->has('daterange'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('daterange') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <!-- /.form group -->
 
-                    <div class="form-group">
-                        <label for="exampleInputFile">Featured image</label>
-                        <input type="file" id="image" name="image">
+                    <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
+                        {!! Form::label('image', 'Featured image') !!}
+                        {!! Form::file('image', ['accept' => 'image/*']) !!}
 
                         <p class="help-block">Allowed types: jpg, png, bmp, gif</p>
+                        @if($errors->has('image'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('image') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+                        {!! Form::label('description', 'Description') !!}
+                        {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => 3]) !!}
+                        @if($errors->has('description'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('description') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
                 </div>
                 <!-- /.box-body -->
 
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
                 </div>
             </div>
         </div>
@@ -77,33 +96,51 @@
                     <h3 class="box-title">Address</h3>
                 </div>
                 <div class="box-body">
-                    <div class="form-group">
-                        <label for="country">Country</label>
-                        <input type="text" name="country" class="form-control" id="country" placeholder="Enter country">
+                    <div class="form-group{{ $errors->has('country') ? ' has-error' : '' }}">
+                        {!! Form::label('country', 'Country') !!}
+                        {!! Form::text('country', null, ['class' => 'form-control']) !!}
+                        @if($errors->has('country'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('country') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" name="city" class="form-control" id="city" placeholder="Enter city">
+                    <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
+                        {!! Form::label('city', 'City') !!}
+                        {!! Form::text('city', null, ['class' => 'form-control']) !!}
+                        @if($errors->has('city'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('city') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input type="text" name="address" class="form-control" id="address" placeholder="Enter street">
+                    <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
+                        {!! Form::label('address', 'Address') !!}
+                        {!! Form::text('address', null, ['class' => 'form-control']) !!}
+                        @if($errors->has('address'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('address') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
-                    <input type="hidden" name="map_lat" id="map_lat">
-                    <input type="hidden" name="map_lng" id="map_lng">
+                    {!! Form::hidden('map_lat', null, ['id' => 'map_lat']) !!}
+                    {!! Form::hidden('map_lng', null, ['id' => 'map_lng']) !!}
 
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div id="map"></div>
-                        </div>
+                    <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
+                        <div id="map"></div>
+                        @if($errors->has('map_lat') || $errors->has('map_lng'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('map_lat') }}</strong>
+                            </span>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    {!! Form::close() !!}
 @endsection
 
 @section('scripts')
@@ -118,7 +155,7 @@
         $(function() {
             $('input[name="daterange"]').daterangepicker({
                 timePicker: true,
-                timePickerIncrement: 30,
+                timePickerIncrement: 5,
                 locale: {
                     format: 'MM/DD/YYYY h:mm A'
                 }

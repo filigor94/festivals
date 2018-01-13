@@ -35,6 +35,7 @@
 
             <!-- Main content -->
             <section class="content container-fluid">
+                @include('admin.layouts.message')
                 @yield('content')
             </section>
             <!-- /.content -->
