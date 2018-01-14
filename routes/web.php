@@ -19,6 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::resource('festivals', 'Front\FestivalsController');
+Route::post('visitors/store/festival/{festival}', 'Front\VisitorsController@store')->name('visitors.store');
+
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
-    Route::resource('festivals', 'Admin\AdminFestivalsController');
+    Route::resource('festivals', 'Admin\AdminFestivalsController', ['as' => 'admin']);
 });

@@ -27,7 +27,7 @@ function initMap() {
     var infowindow = new google.maps.InfoWindow;
 }
 
-function initMapLocations(data) {
+function initMapLocations(data, disabled_click) {
     marker = true;
     var beaches = JSON.parse(data);
     var location = {lat: beaches[0][1], lng: beaches[0][2]};
@@ -36,21 +36,23 @@ function initMapLocations(data) {
         center: location
     });
 
-    map.addListener("click", function (event) {
-        var latitude = createProblemLat = event.latLng.lat();
-        var longitude = createProblemLng = event.latLng.lng();
+    if (!disabled_click) {
+        map.addListener("click", function (event) {
+            var latitude = createProblemLat = event.latLng.lat();
+            var longitude = createProblemLng = event.latLng.lng();
 
-        $('#map_lat').val(latitude);
-        $('#map_lng').val(longitude);
+            $('#map_lat').val(latitude);
+            $('#map_lng').val(longitude);
 
-        console.log( latitude + ', ' + longitude );
-        placeMarkerAndPanTo(event.latLng, map);
+            console.log( latitude + ', ' + longitude );
+            placeMarkerAndPanTo(event.latLng, map);
 
-        geocodeLatLng(geocoder, map, infowindow);
-    }); //end addListener
+            geocodeLatLng(geocoder, map, infowindow);
+        }); //end addListener
 
-    var geocoder = new google.maps.Geocoder;
-    var infowindow = new google.maps.InfoWindow;
+        var geocoder = new google.maps.Geocoder;
+        var infowindow = new google.maps.InfoWindow;
+    }
 
     setMarkers(map, beaches);
 }

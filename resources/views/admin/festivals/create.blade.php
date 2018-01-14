@@ -3,16 +3,11 @@
 @section('content-header')
     <h1>
         Create Festival
-        <small>Optional description</small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
-    </ol>
 @endsection
 
 @section('content')
-    {!! Form::open(['route' => 'festivals.store', 'method' => 'post', 'files' => true]) !!}
+    {!! Form::open(['route' => 'admin.festivals.store', 'method' => 'post', 'files' => true]) !!}
         <div class="col-lg-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -132,7 +127,7 @@
         <div class="col-lg-12">
             <div class="box box-primary">
                 <div class="box-footer">
-                    <a href="{{ route('festivals.index') }}" class="btn btn-danger">Cancel</a>
+                    <a href="{{ route('admin.festivals.index') }}" class="btn btn-danger">Cancel</a>
                     {!! Form::submit('Create', ['class' => 'btn btn-primary pull-right']) !!}
                 </div>
             </div>

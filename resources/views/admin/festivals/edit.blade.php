@@ -1,4 +1,4 @@
-{!! Form::model($festival, ['route' => ['festivals.store', $festival->id], 'method' => 'put', 'files' => true, 'id' => 'editFestival']) !!}
+{!! Form::model($festival, ['route' => ['admin.festivals.store', $festival->id], 'method' => 'put', 'files' => true, 'id' => 'editFestival']) !!}
     <div class="modal-body" id="festivalBody" style="overflow: auto;">
         <div class="col-lg-6">
             <div class="box box-primary">

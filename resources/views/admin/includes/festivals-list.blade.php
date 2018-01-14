@@ -21,7 +21,7 @@
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
                         </button>
 
-                        {!! Form::open(['route' => ['festivals.destroy', $festival->id], 'method' => 'delete', 'style' => 'display: inline-block']) !!}
+                        {!! Form::open(['route' => ['admin.festivals.destroy', $festival->id], 'method' => 'delete', 'style' => 'display: inline-block']) !!}
                             <button type="submit" class="btn btn-danger btn-xs">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
                             </button>

@@ -13,4 +13,9 @@ class Festival extends Model
     {
         return asset('storage/festivals') . '/' . $value;
     }
+
+    public function visitors()
+    {
+        return $this->belongsToMany(Visitor::class);
+    }
 }

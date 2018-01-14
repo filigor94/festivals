@@ -3,14 +3,10 @@
 @section('content-header')
     <h1>
         Festivals
-        <a href="{{ route('festivals.create') }}" class="btn btn-success btn-xs">
+        <a href="{{ route('admin.festivals.create') }}" class="btn btn-success btn-xs">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new
         </a>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
-    </ol>
 @endsection
 
 @section('content')

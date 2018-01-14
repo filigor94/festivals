@@ -76,7 +76,7 @@ class AdminFestivalsController extends Controller
 
         $request->session()->flash('message', 'The festival has been successfully created.');
 
-        return redirect()->route('festivals.index');
+        return redirect()->route('admin.festivals.index');
     }
 
     /**
