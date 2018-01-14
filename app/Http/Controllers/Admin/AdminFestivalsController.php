@@ -166,6 +166,7 @@ class AdminFestivalsController extends Controller
         if (file_exists(storage_path('app/public/festivals/' . $festival->getOriginal('image'))))
             unlink(storage_path('app/public/festivals/' . $festival->getOriginal('image')));
 
+        $festival->address()->delete();
         $festival->delete();
 
         $request->session()->flash('message', 'The festival has been successfully deleted.');

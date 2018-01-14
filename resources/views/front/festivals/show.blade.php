@@ -2,7 +2,7 @@
     <div class="col-xs-12">
         <img class="img-responsive" src="{{ $festival->image }}" alt="">
         <h2>
-            <a href="#">{{ $festival->title }}</a>
+            {{ $festival->title }}
         </h2>
         <hr>
         <p>
