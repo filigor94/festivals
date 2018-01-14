@@ -72,3 +72,12 @@ You can access it at
 E-mail Address: admin@admin.com
 Password: admin
 ```
+
+#### Additional
+
+The initial images might not appear. In this case just copy 2 images with names 1.jpg and 2.jpg to
+
+```
+project-root-directory/storage/app/public/festivals/1.jpg
+project-root-directory/storage/app/public/festivals/2.jpg
+```
