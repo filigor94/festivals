@@ -172,4 +172,11 @@ class AdminFestivalsController extends Controller
 
         return redirect()->back();
     }
+
+    public function applicants(Festival $festival)
+    {
+        $applicants = $festival->visitors()->paginate(10);
+
+        return view('admin.festivals.applicants.index', compact('festival', 'applicants'));
+    }
 }

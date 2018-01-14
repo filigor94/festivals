@@ -1,12 +1,24 @@
 @extends('front.layouts.master')
 
 @section('content')
+    @if(count($errors))
+        <div class="col-lg-12">
+            <div class="alert fresh-color alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    @endif
+
     @if(count($festivals))
         <div class="col-md-8 col-md-offset-2">
             @foreach($festivals as $festival)
                 <img class="img-responsive" src="{{ $festival->image }}" alt="">
                 <h2>
-                    <a href="#">{{ $festival->title }}</a>
+                    <a class="festival-details" data-id="{{ $festival->id }}" style="cursor: pointer;">{{ $festival->title }}</a>
                 </h2>
                 <hr>
                 <p>

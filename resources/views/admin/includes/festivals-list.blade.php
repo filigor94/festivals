@@ -6,16 +6,18 @@
             <th>Title</th>
             <th>Begins</th>
             <th>Ends</th>
+            <th>Applicants</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
             @foreach($festivals as $festival)
                 <tr>
-                    <td><img src="{{ $festival->image }}" class="img-responsive"></td>
+                    <td><img src="{{ $festival->image }}"></td>
                     <td>{{ $festival->title }}</td>
-                    <td>{{ $festival->start_date }}</td>
-                    <td>{{ $festival->end_date }}</td>
+                    <td>{{ Carbon\Carbon::parse($festival->start_date)->toDayDateTimeString() }}</td>
+                    <td>{{ Carbon\Carbon::parse($festival->end_date)->toDayDateTimeString() }}</td>
+                    <td><a href="{{ route('admin.festivals.applicants', ['festival' => $festival->id]) }}">View</a></td>
                     <td>
                         <button type="button" class="edit-festival btn btn-primary btn-xs" data-id="{{ $festival->id }}" onclick="editFestival($(this))">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
